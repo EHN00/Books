@@ -11,7 +11,7 @@ def execute(cmd):
     if not cmd:
         return
     output = subprocess.check_output(shlex.split(cmd), stderr=subprocess.STDOUT)
-    return output.decode
+    return output.decode()
 
 class NetCat:
     def __init__(self, args, buffer=None):
@@ -39,11 +39,11 @@ class NetCat:
                     response += data.decode()
                     if recv_len < 4096:
                         break
-            if response:
-                print(response)
-                buffer = input('> ')
-                buffer += '\n'
-                self.socket.send(buffer.encode())
+                if response:
+                    print(response)
+                    buffer = input('> ')
+                    buffer += '\n'
+                    self.socket.send(buffer.encode())
         except KeyboardInterrupt:
             print('User terminated.')
             self.socket.close()
@@ -84,6 +84,7 @@ class NetCat:
                     response = execute(cmd_buffer.decode())
                     if response:
                         client_socket.send(response.encode())
+                    cmd_buffer = b''
                 except Exception as e:
                     print(f'server killed {e}') 
                     self.socket.close()
@@ -94,7 +95,7 @@ if __name__ == '__main__':
     netcat.py -t 192.168.1.108 -p 5555 -l -c # command shell
     netcat.py -t 192.168.1.108 -p 5555 -l -e=\"cat /etc/passwd\" #execute command
     echo 'ABC' | ./netcat.py -t 192.168.1.108 -p 135 # echo text to server port 135
-    netcat.py -t 192.168.1.108 -p 5555 -l -umytest.txt # upload to file
+    netcat.py -t 192.168.1.108 -p 5555 -l -u=mytest.txt # upload to file
     netcat.py -t 192.168.1.108 -p 5555 # connect to server
     '''))
     parser.add_argument('-c', '--command', action='store_true', help='command shell')
