@@ -21,8 +21,10 @@ class NetCat:
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     def run(self):
         if self.args.listen:
+            print("listening")
             self.listen()
         else:
+            print("sending")
             self.send()
     def send(self):
         self.socket.connect((self.args.target, self.args.port))
@@ -105,11 +107,13 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--target', default ='102.168.1.203', help='specified IP')
     parser.add_argument('-u', '--upload', help='upload file')
     args = parser.parse_args()
-    if args.listen:
-        buffer = ''
-    else:
-        buffer = sys.stdin.read()
-
+    #if args.listen:
+        #buffer = ''
+    #else:
+        #buffer = sys.stdin.read()
+        #buffer = input('> ')
+        #buffer += '\n'
+    buffer = ''
     nc = NetCat(args, buffer.encode())
     nc.run()
     
