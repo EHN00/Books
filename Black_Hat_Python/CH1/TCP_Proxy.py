@@ -33,3 +33,12 @@ def receive_from(connection):
     except Exception as e:
         pass
     return buffer
+
+def request_handler(buffer):
+    # perform packet modification
+    return buffer
+
+def response_handler(buffer):
+    #perform packet modification
+    return buffer
+
